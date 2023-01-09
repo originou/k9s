@@ -46,6 +46,10 @@ func (Node) Header(_ string) Header {
 		HeaderColumn{Name: "LABELS", Wide: true},
 		HeaderColumn{Name: "VALID", Wide: true},
 		HeaderColumn{Name: "AGE", Time: true},
+		HeaderColumn{Name: "VNG"},
+		HeaderColumn{Name: "INSTANCE"},
+		HeaderColumn{Name: "ARCH"},
+		HeaderColumn{Name: "GPU"},
 	}
 }
 
@@ -96,6 +100,10 @@ func (n Node) Render(o interface{}, ns string, r *Row) error {
 		mapToStr(no.Labels),
 		asStatus(n.diagnose(statuses)),
 		toAge(no.GetCreationTimestamp()),
+		no.Labels["spotinst.io/ocean-vng-id"], // vng id
+		no.Labels["beta.kubernetes.io/instance-type"], // instance type
+		no.Labels["kubernetes.io/arch"],               // arch
+		no.Labels["spotinst.io/gpu-type"],             // gpu
 	}
 
 	return nil
